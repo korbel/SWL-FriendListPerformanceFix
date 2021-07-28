@@ -4,6 +4,7 @@
 	movie       = "FriendListPerformanceFix\FriendListPerformanceFix.swf"
 	depth_layer = "Top"
 	sub_depth   = "2"
+	flags       = "GMF_DONT_UNLOAD"
 	variable    = "FriendListPerformanceFix"
 	criteria    = "FriendListPerformanceFix &amp;&amp; (guimode &amp; (GUIMODEFLAGS_INPLAY | GUIMODEFLAGS_ENABLEALLGUI))"
 	/>
