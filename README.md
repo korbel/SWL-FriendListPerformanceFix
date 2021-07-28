@@ -16,4 +16,4 @@ IMPORTANT NOTE: In case of heavy lags or high ping the 500ms of delay may not be
 ## Installation instructions
 
 Extract the zip file into `<SWL directory>\Data\Gui\Custom\Flash\` and restart the game.
-To check if the mod was installed properly, open your cabal management window and now it should show the last login date of the members in `MM/DD/YY` format.
+To check if the mod was installed properly, open you Friends window and check if you have a REFRESH button at the bottom left corner.
