@@ -238,6 +238,9 @@ class lp.friendlistfix.Main {
         m_RefreshButton._x = 0;
         m_RefreshButton._y = friendsContent._height - m_RefreshButton._height - 1;
         m_RefreshButton.addEventListener("click", this, "RefreshButtonClickHandler");
+        
+        friendsContent.m_ViewsContainer.swapDepths(friendsContent.getNextHighestDepth());
+        friendsContent.m_PromptWindow.swapDepths(friendsContent.getNextHighestDepth());
     }
     
     private function ManualRefreshHooks() {
