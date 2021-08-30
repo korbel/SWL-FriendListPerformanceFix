@@ -4,6 +4,8 @@ This mod disables the automatic refresh of the Friends List and Cabal Management
 
 Additional features:
 - Adds a refresh button to the Friends List window
+- Fixes the depth layers of the buttons on the Friends List window so the buttons don't hide the right-click menu anymore
+- Adds an "Invite to Raid" menu entry to the right-click menu of the Friends List window when you are the leader of a raid
 - Changes the date format on the member list of the Cabal Management window
 - Automatically refreshes the contents of the above mentioned windows with a 500ms of delay in the following cases:
   - Adding/Removing a friend
