@@ -3,6 +3,9 @@ import com.Utils.LDBFormat;
 import com.Utils.Signal;
 import com.GameInterface.Friends;
 import com.GameInterface.Guild.Guild;
+import com.Components.RightClickItem;
+import com.GameInterface.Game.CharacterBase;
+import com.GameInterface.Game.TeamInterface;
 
 import lp.friendlistfix.utils.StringUtils;
 
@@ -15,6 +18,7 @@ class lp.friendlistfix.Main {
 
     private var m_swfRoot:MovieClip;
     
+    private var m_viewHookInterval:Number;
     private var m_guildHookInterval:Number;
     private var m_friendsHookInterval:Number;
     private var m_ignoredHookInterval:Number;
@@ -35,6 +39,7 @@ class lp.friendlistfix.Main {
     }
     
     public function OnLoad() {
+        m_viewHookInterval = setInterval(Delegate.create(this, HookView), HOOK_CHECK_INTERVAL);
         m_guildHookInterval = setInterval(Delegate.create(this, HookGuildView), HOOK_CHECK_INTERVAL);
         m_friendsHookInterval = setInterval(Delegate.create(this, HookFriendsView), HOOK_CHECK_INTERVAL);
         m_ignoredHookInterval = setInterval(Delegate.create(this, HookIgnoredView), HOOK_CHECK_INTERVAL);
@@ -45,11 +50,26 @@ class lp.friendlistfix.Main {
     }
 
     public function OnUnload() {
+        if (m_viewHookInterval) clearInterval(m_viewHookInterval);
         if (m_guildHookInterval) clearInterval(m_guildHookInterval);
         if (m_friendsHookInterval) clearInterval(m_friendsHookInterval);
         if (m_ignoredHookInterval) clearInterval(m_ignoredHookInterval);
         if (m_windowHookInterval) clearInterval(m_windowHookInterval);
         if (m_membersManagementHookInterval) clearInterval(m_membersManagementHookInterval);
+    }
+
+    private function HookView() {
+        var proto:Object = _global.GUI.Friends.Views.View.prototype;
+        if (proto) {
+            var wrapper:Function = function():Void {
+                arguments.callee.base.apply(this, arguments);
+                Main.s_app.AddInviteToRaidMenuItem(this);
+            };
+            wrapper.base = proto.RowSelected;
+            proto.RowSelected = wrapper;
+            clearInterval(m_viewHookInterval);
+            m_viewHookInterval = null;
+        }
     }
     
     private function HookGuildView() {
@@ -142,6 +162,37 @@ class lp.friendlistfix.Main {
     
     private function RefreshButtonClickHandler() {
         RefreshFriendWindowSignal.Emit();
+    }
+
+    private function AddInviteToRaidMenuItem(view) {
+        var charId = view.m_RowID;
+
+        if (CharacterBase.GetClientCharID().Equal(charId)) {
+            return;
+        }
+        if (!view.m_RowOnline) {
+            return;
+        }
+        if (!TeamInterface.IsClientRaidLeader()) {
+            return;
+        }
+        if (TeamInterface.IsInClientTeam(charId) || TeamInterface.IsInClientRaid(charId)) {
+            return;
+        }
+
+        var item = new RightClickItem(LDBFormat.LDBGetText("Gamecode", "InviteToRaid"), false, RightClickItem.LEFT_ALIGN);
+
+        item.SignalItemClicked.Connect(function() {
+            TeamInterface.InviteToRaid(charId);
+        }, view);
+
+        var arr = view.m_RightClickMenu.dataProvider;
+        arr.splice(3, 0, item);
+        view.m_RightClickMenu.dataProvider = arr;
+
+        if (view.m_RightClickMenu._visible) {
+            view.PositionRightClickMenu();
+        }
     }
     
     private function GuildSignalRedirect(guildView) {
