@@ -60,7 +60,7 @@ class lp.friendlistfix.Main {
 
     private function HookView() {
         var proto:Object = _global.GUI.Friends.Views.View.prototype;
-        if (proto) {
+        if (proto && !proto.configUI.base) {
             var wrapper:Function = function():Void {
                 arguments.callee.base.apply(this, arguments);
                 Main.s_app.AddInviteToRaidMenuItem(this);
@@ -74,7 +74,7 @@ class lp.friendlistfix.Main {
     
     private function HookGuildView() {
         var proto:Object = _global.GUI.Friends.Views.GuildView.prototype;
-        if (proto) {
+        if (proto && !proto.configUI.base) {
             var wrapper:Function = function():Void {
                 arguments.callee.base.apply(this, arguments);
                 Main.s_app.GuildSignalRedirect(this);
@@ -91,7 +91,7 @@ class lp.friendlistfix.Main {
     
     private function HookFriendsView() {
         var proto:Object = _global.GUI.Friends.Views.FriendsView.prototype;
-        if (proto) {
+        if (proto && !proto.configUI.base) {
             var wrapper:Function = function():Void {
                 arguments.callee.base.apply(this, arguments);
                 Main.s_app.FriendsSignalRedirect(this);
@@ -108,7 +108,7 @@ class lp.friendlistfix.Main {
     
     private function HookIgnoredView() {
         var proto:Object = _global.GUI.Friends.Views.IgnoredView.prototype;
-        if (proto) {
+        if (proto && !proto.configUI.base) {
             var wrapper:Function = function():Void {
                 arguments.callee.base.apply(this, arguments);
                 Main.s_app.IgnoredSignalRedirect(this);
@@ -125,7 +125,7 @@ class lp.friendlistfix.Main {
     
     private function HookFriendsContainer() {
         var proto:Object = _global.GUI.Friends.FriendsContent.prototype;
-        if (proto) {
+        if (proto && !proto.configUI.base) {
             var wrapper:Function = function():Void {
                 Main.s_app.AddRefreshButton(this);
                 arguments.callee.base.apply(this, arguments);
@@ -142,7 +142,7 @@ class lp.friendlistfix.Main {
     
     private function HookCabalMembersManagement() {
         var proto:Object = _global.GUI.CabalManagement.CabalMembers.prototype;
-        if (proto) {
+        if (proto && !proto.configUI.base) {
             var wrapper:Function = function():Void {
                 arguments.callee.base.apply(this, arguments);
                 Main.s_app.MembersUpdateSignalRedirect(this);
