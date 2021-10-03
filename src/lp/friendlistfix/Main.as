@@ -60,7 +60,7 @@ class lp.friendlistfix.Main {
 
     private function HookView() {
         var proto:Object = _global.GUI.Friends.Views.View.prototype;
-        if (proto && !proto.configUI.base) {
+        if (proto && !proto.RowSelected.base) {
             var wrapper:Function = function():Void {
                 arguments.callee.base.apply(this, arguments);
                 Main.s_app.AddInviteToRaidMenuItem(this);
